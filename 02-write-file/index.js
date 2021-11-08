@@ -1,31 +1,25 @@
+const fs = require("fs").promises;
 const path = require("path");
-const fs = require("fs");
 const process = require("process");
 const readline = require("readline");
 
-const filePath = path.join(__dirname, "output.txt");
+let filePath = path.resolve(__dirname, "result.txt");
 
-// const rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout,
-// });
+async function writeFile() {
+  let file = await fs.open(filePath, "a+");
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  console.log("Введите текст:");
+  for await (const line of rl) {
+    if (line == "exit") {
+      break;
+    }
+    await file.write(`${line}\n`);
+  }
+  await file.close();
+  console.log("Ввод заввершен");
+}
 
-// rl.question("your message: ", (userInput) => {
-//   fs.access(filePath, function (error) {
-//     if (error) {
-//       const file = fs.createWriteStream(filePath);
-//       file.write(userInput);
-//     } else {
-//       file.write(userInput);
-//     }
-//   });
-// });
-
-const events = require("events");
-
-const myEmit = new events.EventEmitter();
-
-myEmit.on("some_event", function (text) {
-  console.log(text);
-});
-myEmit.emit("some_event", "text text text");
+writeFile();
