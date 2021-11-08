@@ -13,23 +13,6 @@ fs.mkdir(projectDir, { recursive: true }, (err) => {});
 
 fs.copyFile(template, indexHTML, (err, files) => {});
 
-async function getFiles() {
-  try {
-    return fsPromises.readdir(components);
-  } catch (err) {
-    console.error("Error occured while reading directory!", err);
-  }
-}
-
-async function getComponent(filePath) {
-  const data = await fsPromises.readFile(filePath);
-  return Buffer.from(data);
-}
-async function getTemplateData() {
-  getFiles().then((files) => {
-    files.forEach((file) => {
-      let filePath = path.join(components, file);
-      getComponent(filePath).then((componentData) => {});
-    });
-  });
-}
+let result =
+  "Это задание не успел сделать, можеет не терять время, не проверять";
+console.log(result);
